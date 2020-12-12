@@ -45,16 +45,16 @@ const posts = [{
 }]
 
 const comments = [{
-	id: '111',
+	id: '101',
 	text: 'You got this'
 }, {
-	id: '112',
+	id: '102',
 	text: 'Making GraphQl look easy'
 }, {
-	id: '113',
+	id: '103',
 	text: 'First step here, next step beer'
 }, {
-	id: '114',
+	id: '104',
 	text: 'Started from the bottom!'
 }]
 
