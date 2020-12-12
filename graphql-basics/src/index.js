@@ -7,11 +7,22 @@ import { GraphQLServer } from 'graphql-yoga'
 // __Type Definitions (schema)
 const typeDefs = `
 	type Query {
+		me: User!
+		post: Post!
+	}
+
+	type User {
+		id: ID!
+		name: String!
+		email: String!
+		age: Int
+	}
+
+	type Post {
+		id: ID!
 		title: String!
-		price: Float!
-		releaseYear: Int
-		rating: Float
-		inStock: Boolean!
+		body: String!
+		published: Boolean!
 	}
 `
 
@@ -19,11 +30,22 @@ const typeDefs = `
 // __Resolvers
 const resolvers = {
 	Query: {
-		title() {return 'Pepsi'},
-		price() {return 3.75},
-		releaseYear() {return 1908},
-		rating() {return 4.8},
-		inStock() {return true}
+		me() {
+			return {
+				id: 'abc123',
+				name: 'Pavel Sanchez',
+				email: 'psanchez@aclu.org',
+				age: 35
+			}
+		},
+		post() {
+			return {
+				id: '8675309',
+				title: 'GraphQL API',
+				body: 'This is the body of the post....',
+				published: false
+			}
+		}
 	}
 }
 
