@@ -186,14 +186,10 @@ const resolvers = {
 		},
 		createComment(parent, args, ctx, info) {
 			const userExists = users.some((user) => user.id === args.author)
-			const postExists = posts.some((post) => post.id === args.post)
+			const postExists = posts.some((post) => post.id === args.post && post.published)
 
-			if (!userExists) {
-				throw new Error('User not found')
-			}
-
-			if(!postExists) {
-				throw new Error('Post not found')
+			if (!userExists || !postExists) {
+				throw new Error('Unable to find user or post')
 			}
 
 			const comment = {
