@@ -4,12 +4,29 @@ import { GraphQLServer } from 'graphql-yoga'
 // __ String, Boolean, Int, Float, ID
 
 
+// __ Demo Data
+const users = [{
+	id: '1',
+	name: 'Pavel',
+	email: 'Psanchez@aclu.org',
+	age: 35
+}, {
+	id: '2',
+	name: 'Thomas',
+	email: 'tanderson@dirtyknuckles.com',
+	age: 28
+}, {
+	id: '3',
+	name: 'Jane',
+	email: 'janderson@dirtyknuckles.com',
+}]
+
+
+
 // __Type Definitions (schema)
 const typeDefs = `
 	type Query {
-		greeting(name: String, position: String): String!
-		add(numbers: [Float!]!): Float!
-		grades: [Int!]!
+		users(query: String): [User!]!
 		me: User!
 		post: Post!
 	}
@@ -33,27 +50,6 @@ const typeDefs = `
 // __Resolvers
 const resolvers = {
 	Query: {
-		greeting(parent, args, ctx, info){
-			if (args.name && args.position) {
-				return `Hello, ${args.name}! You are my favorite ${args.position}.`
-			} else {
-				return 'Hello!'
-			}
-		},
-		add(parent,args, ctx, info) {
-				if(args.numbers.lenght === 0) {
-					return 0
-				}
-
-				// [1,5,10,2]
-				return args.numbers.reduce((accumulator, currentValue) => {
-					return accumulator + currentValue
-				})
-
-		},
-		grades(parents, args, ctx, info) {
-			return [99,92,83]
-		},
 		me() {
 			return {
 				id: 'abc123',
@@ -69,6 +65,15 @@ const resolvers = {
 				body: 'This is the body of the post....',
 				published: false
 			}
+		},
+		users(parents,args,ctx,info) {
+			if(!args.query) {
+				return users
+			}
+
+			return users.filter((users) => {
+				return users.name.toLowerCase().includes(args.query.toLowerCase())
+			})
 		}
 	}
 }
