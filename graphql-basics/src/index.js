@@ -45,9 +45,7 @@ const posts = [{
 const typeDefs = `
 	type Query {
 		users(query: String): [User!]!
-		posts(title: String, body: String): [Post!]!
-		me: User!
-		post: Post!
+		posts(query: String): [Post!]!
 	}
 
 	type User {
@@ -69,22 +67,6 @@ const typeDefs = `
 // __Resolvers
 const resolvers = {
 	Query: {
-		me() {
-			return {
-				id: 'abc123',
-				name: 'Pavel Sanchez',
-				email: 'psanchez@aclu.org',
-				age: 35
-			}
-		},
-		post() {
-			return {
-				id: '8675309',
-				title: 'GraphQL API',
-				body: 'This is the body of the post....',
-				published: false
-			}
-		},
 		users(parents,args,ctx,info) {
 			if(!args.query) {
 				return users
@@ -95,12 +77,15 @@ const resolvers = {
 			})
 		},
 		posts(parent,args,ctx,info) {
-			if(!args.title) {
+			if(!args.query) {
 				return posts
 			}
 
-			return posts.filter((posts) => {
-				return posts.title.toLowerCase().includes(args.title.toLowerCase())
+			return posts.filter((post) => {
+				const isTitleMatch = post.title.toLowerCase().includes(args.query.toLowerCase())
+				const isBodyMatch = post.body.toLowerCase().includes(args.query.toLowerCase())
+
+				return isTitleMatch || isBodyMatch
 			})
 		}
 	}
