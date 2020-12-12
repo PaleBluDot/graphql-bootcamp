@@ -14,7 +14,6 @@ const users = [{
 	id: '2',
 	name: 'Thomas',
 	email: 'tanderson@dirtyknuckles.com',
-	age: 28,
 }, {
 	id: '3',
 	name: 'Jane',
@@ -46,16 +45,20 @@ const posts = [{
 
 const comments = [{
 	id: '101',
-	text: 'You got this'
+	text: 'You got this',
+	author: '1'
 }, {
 	id: '102',
-	text: 'Making GraphQl look easy'
+	text: 'Making GraphQl look easy',
+	author: '3'
 }, {
 	id: '103',
-	text: 'First step here, next step beer'
+	text: 'First step here, next step beer',
+	author: '1'
 }, {
 	id: '104',
-	text: 'Started from the bottom!'
+	text: 'Started from the bottom!',
+	author: '2'
 }]
 
 
@@ -65,7 +68,7 @@ const typeDefs = `
 	type Query {
 		users(query: String): [User!]!
 		posts(query: String): [Post!]!
-		comment(query: String): [Comment!]!
+		comments(query: String): [Comment!]!
 	}
 
 	type User {
@@ -74,6 +77,7 @@ const typeDefs = `
 		email: String!
 		age: Int
 		posts: [Post]!
+		comments:[Comment!]!
 	}
 
 	type Post {
@@ -85,10 +89,9 @@ const typeDefs = `
 	}
 
 	type Comment {
-		id: ID
-		text: String
+		id: ID!
+		text: String!
 		author: User!
-		post: Post!
 	}
 `
 
@@ -117,7 +120,7 @@ const resolvers = {
 				return isTitleMatch || isBodyMatch
 			})
 		},
-		comment(parent,args,ctx,info) {
+		comments(parent,args,ctx,info) {
 			if(!args.query) {
 				return comments
 			}
@@ -137,10 +140,22 @@ const resolvers = {
 			})
 		}
 	},
+	Comment: {
+		author(parent,args,ctx,info) {
+			return users.find((user) => {
+				return user.id === parent.author
+			})
+		}
+	},
 	User: {
 		posts(parent,args,ctx,info) {
 			return posts.filter((post) => {
 				return post.author === parent.id
+			})
+		},
+		comments(parents,args, ctx,info) {
+			return comments.filter((comment) => {
+				return comment.author === parent.id
 			})
 		}
 	}
