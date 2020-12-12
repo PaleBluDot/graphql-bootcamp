@@ -9,12 +9,12 @@ const users = [{
 	id: '1',
 	name: 'Pavel',
 	email: 'Psanchez@aclu.org',
-	age: 35
+	age: 35,
 }, {
 	id: '2',
 	name: 'Thomas',
 	email: 'tanderson@dirtyknuckles.com',
-	age: 28
+	age: 28,
 }, {
 	id: '3',
 	name: 'Jane',
@@ -58,6 +58,7 @@ const typeDefs = `
 		name: String!
 		email: String!
 		age: Int
+		posts: [Post]!
 	}
 
 	type Post {
@@ -99,6 +100,13 @@ const resolvers = {
 		author(parent, args, ctx, info) {
 			return users.find((user) => {
 				return user.id === parent.author
+			})
+		}
+	},
+	User: {
+		posts(parent,args,ctx,info) {
+			return posts.filter((post) => {
+				return post.author === parent.id
 			})
 		}
 	}
