@@ -22,11 +22,30 @@ const users = [{
 }]
 
 
+const posts = [{
+	id: '1',
+	title: 'GraphQL',
+	body: 'This is the body of first post...',
+	published: true
+}, {
+	id: '2',
+	title: 'Apollo',
+	body: 'This is the body of second post...',
+	published: true
+}, {
+	id: '3',
+	title: 'NodeJS',
+	body: 'This is the body of third post...',
+	published: true
+}]
+
+
 
 // __Type Definitions (schema)
 const typeDefs = `
 	type Query {
 		users(query: String): [User!]!
+		posts(title: String, body: String): [Post!]!
 		me: User!
 		post: Post!
 	}
@@ -73,6 +92,15 @@ const resolvers = {
 
 			return users.filter((users) => {
 				return users.name.toLowerCase().includes(args.query.toLowerCase())
+			})
+		},
+		posts(parent,args,ctx,info) {
+			if(!args.title) {
+				return posts
+			}
+
+			return posts.filter((posts) => {
+				return posts.title.toLowerCase().includes(args.title.toLowerCase())
 			})
 		}
 	}
