@@ -21,7 +21,7 @@ const resolvers = {
 	Query: {
 		title() {return 'Pepsi'},
 		price() {return 3.75},
-		releaseYear() {return 1936},
+		releaseYear() {return 1908},
 		rating() {return 4.8},
 		inStock() {return true}
 	}
