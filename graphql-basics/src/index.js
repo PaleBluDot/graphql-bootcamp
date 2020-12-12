@@ -44,6 +44,20 @@ const posts = [{
 	author: '2'
 }]
 
+const comments = [{
+	id: '111',
+	text: 'You got this'
+}, {
+	id: '112',
+	text: 'Making GraphQl look easy'
+}, {
+	id: '113',
+	text: 'First step here, next step beer'
+}, {
+	id: '114',
+	text: 'Started from the bottom!'
+}]
+
 
 
 // __Type Definitions (schema)
@@ -51,6 +65,7 @@ const typeDefs = `
 	type Query {
 		users(query: String): [User!]!
 		posts(query: String): [Post!]!
+		comment(query: String): [Comment!]!
 	}
 
 	type User {
@@ -67,6 +82,13 @@ const typeDefs = `
 		body: String!
 		published: Boolean!
 		author: User!
+	}
+
+	type Comment {
+		id: ID
+		text: String
+		author: User!
+		post: Post!
 	}
 `
 
@@ -93,6 +115,18 @@ const resolvers = {
 				const isBodyMatch = post.body.toLowerCase().includes(args.query.toLowerCase())
 
 				return isTitleMatch || isBodyMatch
+			})
+		},
+		comment(parent,args,ctx,info) {
+			if(!args.query) {
+				return comments
+			}
+
+			return comments.filter((comment) => {
+				const isIDMatch = comment.id.toLowerCase().includes(args.query.toLowerCase())
+				const isTextMatch = comment.text.toLowerCase().includes(args.query.toLowerCase())
+
+				return isIDMatch || isTextMatch
 			})
 		}
 	},
