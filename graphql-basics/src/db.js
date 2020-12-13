@@ -1,16 +1,17 @@
 const users = [{
 	id: '1',
 	name: 'Pavel',
-	email: 'Psanchez@aclu.org',
+	email: 'psanchez@ess.so',
 	age: 35,
 }, {
 	id: '2',
 	name: 'Thomas',
-	email: 'tanderson@dirtyknuckles.com',
+	email: 'tanderson@ess.so',
 }, {
 	id: '3',
 	name: 'Jane',
-	email: 'janderson@dirtyknuckles.com',
+	email: 'janderson@ess.so',
+	age: 28
 }]
 
 
