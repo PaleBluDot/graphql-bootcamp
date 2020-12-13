@@ -187,7 +187,7 @@ const Mutation = {
 
 		pubsub.publish(`comment: ${args.data.post}`, {
 			comment: {
-				mutation: "CREATED",
+				mutation: 'CREATED',
 				data: comment
 			}
 		})
